@@ -1,15 +1,15 @@
 import React, { createContext, useReducer } from 'react';
 
 //5. The reducer - this is used to update the state, based on the action
-export const AppReducer = () => {
+export const AppReducer = (state, action) => {
     let new_expenses = [];
-    switch (applicationCache.type) {
+    switch (action.type) {
         case 'ADD_QUANTITY':
-            let updateqty = false;
+            let updatedqty = false;
             state.expenses.map((expense) => {
                 if (expense.name === action.payload.name) {
                     expense.quantity = expense.quantity + action.payload.quantity;
-                    updateqty.qty = true;    
+                    updatedqty = true;    
                 }
                 new_expenses.push(expense);
                 return true;
@@ -18,11 +18,11 @@ export const AppReducer = () => {
             action.type = "DONE";
             return {
                 ...state,
-            }
+            };
 
             case 'RED_QUANTITY':
                 state.expenses.map((expense) => {
-                    if (expenses.name === action.payload.name) {
+                    if (expense.name === action.payload.name) {
                         expense.quantity = expense.quantity - action.payload.quantity;
                     }
                     expense.quantity = expense.quantity < 0 ? 0: expense.quantity;
@@ -78,7 +78,7 @@ export const AppContext = createContext();
 // Accepts the children, which are the nested (wrapped) components
 export const AppProvider = (props) => {
     //4. Sets up the app state. Takes a reducer, and an initial state
-    const [state, dispatch] = UseReducer(AppReducer, initialState);
+    const [state, dispatch] = useReducer(AppReducer, initialState);
 
     const totalExpenses = state.expenses.reduce((total, item) => {
         return (total = total + (item.unitprice*item.quantity));
